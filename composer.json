@@ -16,9 +16,7 @@
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.5",
-        "santigarcor/laratrust": "^6.3",
-        "sc0vu/web3.php": "dev-master",
-        "web3p/ethereum-tx": "^0.4.3"
+        "santigarcor/laratrust": "^6.3"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

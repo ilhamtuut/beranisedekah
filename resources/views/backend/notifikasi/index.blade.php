@@ -22,7 +22,7 @@
                     </li>
                 @empty
                     <li class="timeline-item text-center">
-                        <p>Belum ada data transaksi</p>
+                        <p>Belum ada notifikasi</p>
                     </li>
                 @endforelse
             </ul>

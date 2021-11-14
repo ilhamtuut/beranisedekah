@@ -2,7 +2,7 @@
 
 @section('content')
 @role('member')
-    <a href="{{route('transaksi.donasi')}}" class="btn btn-success btn-block mb-4">Lakukan donasi untuk kenaikan level Anda</a>
+    <a href="{{route('transaksi.donasi')}}" class="btn btn-success btn-block mb-4 p-10">Lakukan donasi untuk kenaikan level Anda</a>
 @endrole
 <div class="row">
     <div class="col-lg-6 col-md-6">

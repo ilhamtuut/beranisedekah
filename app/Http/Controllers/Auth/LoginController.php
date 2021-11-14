@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class LoginController extends Controller
 {
@@ -25,13 +26,15 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers,ThrottlesLogins;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
+    protected $maxAttempts = 3; // Default is 5
+    protected $decayMinutes = 1; // Default is 1
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
@@ -59,17 +62,6 @@ class LoginController extends Controller
             $field => $request->get($this->username()),
             'password' => $request->password,
         ];
-    }
-
-    protected function authenticateds(Request $request, $user)
-    {
-        $previous_session = $user->session_id;
-        if ($previous_session) {
-            \Session::getHandler()->destroy($previous_session);
-        }
-
-        $user->session_id = \Session::getId();
-        $user->save();
     }
 
     protected function authenticated(Request $request, $user)

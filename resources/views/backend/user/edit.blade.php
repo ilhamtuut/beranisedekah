@@ -53,7 +53,10 @@
 
             <div class="form-group">
                 <label>Password</label>
-                <input id="password" name="password" type="password" placeholder="Password" class="form-control">
+                <div class="input-group">
+                    <input id="password" name="password" type="password" placeholder="Password" class="form-control border-r-0">
+                    <span class="input-group-addon bg-transparent cursor-pointer" id="showPass"><i class="fa fa-eye-slash"></i></span>
+                </div>
             </div>
 
             <div class="form-group">
@@ -99,5 +102,16 @@
 	        $(this).addClass('hidden');
 	        $('#loader').removeClass('hidden');
 	    });
+
+        $('#showPass').on('click', function(){
+            var passInput = $("#password");
+            if(passInput.attr('type') == 'password'){
+                passInput.attr('type','text');
+                $(this).html('<i class="fa fa-eye"></i>');
+            }else{
+                passInput.attr('type','password');
+                $(this).html('<i class="fa fa-eye-slash"></i>');
+            }
+        });
     </script>
 @endsection

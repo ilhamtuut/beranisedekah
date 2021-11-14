@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-// Route::group(['middleware' => ['auth','block-user','log-activity']], function() {
+Route::group(['middleware' => ['auth','block-user','log-activity']], function() {
     Route::get('/home', 'HomeController@index')->name('home');
     // user
 	Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
@@ -99,4 +99,4 @@ Auth::routes(['register' => false]);
         Route::get('/method/delete/{id}', ['as' => 'method.delete', 'uses' => 'SettingController@deletePaymentMethod'])->middleware(['permission:administrator']);
         Route::post('/update/method', ['as' => 'update.method', 'uses' => 'SettingController@updatePaymentMethod'])->middleware(['permission:administrator']);
     });
-// });
+});

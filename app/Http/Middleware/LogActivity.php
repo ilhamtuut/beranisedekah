@@ -18,12 +18,16 @@ class LogActivity
     public function handle($request, Closure $next)
     {
         $response = $next($request);
-        if(Auth::user()) {
+        if(Auth::user() && $request->isMethod('post')) {
+            $method = $request->method();
+            $payload = json_encode($request->except(['_token','password']));
             ActivityLog::create([
                 'user_id' => Auth::id(),
                 'ip_address'=> $request->ip(),
                 'user_agent'=> $request->userAgent(),
-                'route'=> request()->fullUrl()
+                'route'=> request()->fullUrl(),
+                'method'=> $method,
+                'payload'=> $payload,
             ]);
         }
 

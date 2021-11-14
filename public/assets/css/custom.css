@@ -211,6 +211,7 @@
         padding: unset;
         margin: unset;
         color: #fff !important;
+        font-size: x-large;
     }
     .page-inner:not(.login-page){
         padding: 25px 30px 42px 30px;
@@ -218,7 +219,22 @@
 }
 
 @media (max-width: 500px){
-
+    /* body, html{
+        font-size: 18px;
+    }
+    .page-sidebar-menu ul li a{
+        font-size: 18px;
+    }
+    .accordion-menu .sub-menu li a{
+        font-size: 18px;
+        padding: 9px 30px;
+    }
+    .badge{
+        font-size: 14px;
+    }
+    th,td{
+        font-size: 14px;
+    } */
 }
 
 .page-sidebar-menu ul li.active-page>a {

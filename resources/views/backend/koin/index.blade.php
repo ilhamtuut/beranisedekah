@@ -66,7 +66,7 @@
                 <div class="input-group box-shadow">
                     <span class="input-group-addon bg-white border-0"><i class="fa fa-lock"></i></span>
                     <input id="password" name="kata_sandi" type="password" class="form-control border-0 form-box p-20" placeholder="Kata Sandi Anda" aria-describedby="password">
-                    <span class="input-group-addon bg-white border-0 cursor-pointer" id="showPass"><i class="fa fa-eye"></i></span>
+                    <span class="input-group-addon bg-white border-0 cursor-pointer" id="showPass"><i class="fa fa-eye-slash"></i></span>
                 </div>
             </div>
             <div class="form-group">
@@ -128,8 +128,10 @@
             var passInput = $("#password");
             if(passInput.attr('type') == 'password'){
                 passInput.attr('type','text');
+                $(this).html('<i class="fa fa-eye"></i>');
             }else{
                 passInput.attr('type','password');
+                $(this).html('<i class="fa fa-eye-slash"></i>');
             }
         });
 

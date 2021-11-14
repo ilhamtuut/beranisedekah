@@ -44,14 +44,14 @@
                     <div class="input-group box-shadow">
                         <span class="input-group-addon bg-white border-0"><i class="fa fa-lock"></i></span>
                         <input id="password" name="kata_sandi" type="password" class="form-control border-0 form-box p-20" placeholder="Kata Sandi Lama" aria-describedby="password">
-                        <span class="input-group-addon bg-white border-0 cursor-pointer" id="showPass"><i class="fa fa-eye"></i></span>
+                        <span class="input-group-addon bg-white border-0 cursor-pointer" id="showPass"><i class="fa fa-eye-slash"></i></span>
                     </div>
                 </div>
                 <div class="form-group m-b-lg">
                     <div class="input-group box-shadow">
                         <span class="input-group-addon bg-white border-0"><i class="fa fa-lock"></i></span>
                         <input id="new_password" name="kata_sandi_baru" type="password" class="form-control border-0 form-box p-20" placeholder="Kata Sandi Baru" aria-describedby="new_password">
-                        <span class="input-group-addon bg-white border-0 cursor-pointer" id="showPassNew"><i class="fa fa-eye"></i></span>
+                        <span class="input-group-addon bg-white border-0 cursor-pointer" id="showPassNew"><i class="fa fa-eye-slash"></i></span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -72,16 +72,20 @@
             var passInput = $("#password");
             if(passInput.attr('type') == 'password'){
                 passInput.attr('type','text');
+                $(this).html('<i class="fa fa-eye"></i>');
             }else{
                 passInput.attr('type','password');
+                $(this).html('<i class="fa fa-eye-slash"></i>');
             }
         });
         $('#showPassNew').on('click', function(){
             var passInput = $("#new_password");
             if(passInput.attr('type') == 'password'){
                 passInput.attr('type','text');
+                $(this).html('<i class="fa fa-eye"></i>');
             }else{
                 passInput.attr('type','password');
+                $(this).html('<i class="fa fa-eye-slash"></i>');
             }
         });
     </script>

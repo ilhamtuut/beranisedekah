@@ -10,6 +10,8 @@ class ActivityLog extends Model
 		'user_id',
 		'ip_address',
 		'user_agent',
-		'route'
+		'route',
+		'method',
+		'payload'
 	];
 }

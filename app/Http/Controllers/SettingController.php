@@ -70,28 +70,39 @@ class SettingController extends Controller
 
     public function updatePaymentMethod(Request $request)
     {
+        $required = 'required';
+        if($request->id){
+            $required = 'nullable';
+        }
         $this->validate($request, [
-            'id' => 'nullable',
-            'nama'=>'required|string|unique:payment_methods,name',
-            'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
+            'id' => 'nullable|integer|exists:payment_methods,id',
+            'nama'=>'required|string|unique:payment_methods,name,'.$request->id,
+            'logo' => $required.'|mimes:png,jpg,jpeg|max:2048',
             'password'=>'required'
         ]);
 
         $hasPassword = Hash::check($request->password, Auth::user()->password);
         if($hasPassword){
             $path = 'images/logo/';
+            $filename = '';
             $file = $request->file('logo');
-            $filename = time().$file->getClientOriginalName();
-            $file->move($path,$filename);
+            if($file){
+                $filename = time().$file->getClientOriginalName();
+                $file->move($path,$filename);
+            }
             if($request->id){
                 $method = PaymentMethod::find($request->id);
-                if($method->logo){
-                    $dir = $path.$method->logo;
-                    if(\file_exists($dir)){
-                        unlink($dir);
+                $dataUpdate = ['name'=>$request->nama];
+                if($filename){
+                    if($method->logo){
+                        $dir = $path.$method->logo;
+                        if(\file_exists($dir)){
+                            unlink($dir);
+                        }
                     }
+                    $dataUpdate = ['name'=>$request->nama,'logo'=>$filename];
                 }
-                $method->update(['name'=>$request->nama,'logo'=>$filename]);
+                $method->update($dataUpdate);
                 return redirect()->back()->with(['flash_success' => true,'title' => 'Berhasil','message' => 'Memperbaharui data']);
             }else{
                 PaymentMethod::create(['name'=>$request->nama,'logo'=>$filename]);

@@ -15,6 +15,7 @@
     <link href="{{asset('assets/plugins/icomoon/style.css')}}" rel="stylesheet">
     <link href="{{asset('assets/plugins/uniform/css/default.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/plugins/switchery/switchery.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/plugins/summernote-master/summernote.css')}}" rel="stylesheet"/>
 
     <!-- Theme Styles -->
     <link href="{{asset('assets/css/space.min.css')}}?v={{time()}}" rel="stylesheet">

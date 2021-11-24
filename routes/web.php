@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth','block-user','log-activity']], function() 
         Route::get('/members', ['as' => 'index', 'uses' => 'TeamController@index']);
         Route::get('/add_member', ['as' => 'add_member', 'uses' => 'TeamController@add_member']);
         Route::post('/save_member', ['as' => 'save_member', 'uses' => 'TeamController@save_member']);
+        Route::get('/term_of_condition', ['as' => 'term_of_condition', 'uses' => 'TeamController@term_of_condition']);
     });
 
     // setting
@@ -93,10 +94,13 @@ Route::group(['middleware' => ['auth','block-user','log-activity']], function() 
         Route::post('/update/contact', ['as' => 'update.contact', 'uses' => 'SettingController@updateContact'])->middleware(['permission:administrator']);
         Route::get('/level', ['as' => 'level', 'uses' => 'SettingController@level'])->middleware(['permission:administrator']);
         Route::post('/update/level', ['as' => 'update.level', 'uses' => 'SettingController@updateLevel'])->middleware(['permission:administrator']);
+        Route::post('/update/level/term', ['as' => 'update.level.term', 'uses' => 'SettingController@updateLevelTerm'])->middleware(['permission:administrator']);
         Route::get('/account', ['as' => 'account', 'uses' => 'SettingController@paymentAccount'])->middleware(['permission:administrator']);
         Route::post('/update/account', ['as' => 'update.account', 'uses' => 'SettingController@updatePaymentAccount'])->middleware(['permission:administrator']);
         Route::get('/method', ['as' => 'method', 'uses' => 'SettingController@paymentMethod'])->middleware(['permission:administrator']);
         Route::get('/method/delete/{id}', ['as' => 'method.delete', 'uses' => 'SettingController@deletePaymentMethod'])->middleware(['permission:administrator']);
         Route::post('/update/method', ['as' => 'update.method', 'uses' => 'SettingController@updatePaymentMethod'])->middleware(['permission:administrator']);
+        Route::get('/term', ['as' => 'term', 'uses' => 'SettingController@termOfCondition'])->middleware(['permission:administrator']);
+        Route::post('/term/update', ['as' => 'update.term', 'uses' => 'SettingController@updateTermOfCondition'])->middleware(['permission:administrator']);
     });
 });

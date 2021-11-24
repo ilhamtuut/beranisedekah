@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Level;
+use App\Models\LevelTerm;
 use App\Models\Contact;
 use App\Models\Setting;
 use App\Models\PaymentMethod;
 use App\Models\PaymentAccount;
+use App\Models\TermOfCondition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -176,7 +178,8 @@ class SettingController extends Controller
     public function level()
     {
         $data = Level::orderBy('level')->get();
-        return view('backend.setting.level',compact('data'));
+        $term = LevelTerm::orderBy('step')->get();
+        return view('backend.setting.level',compact('data','term'));
     }
 
     public function updateLevel(Request $request)
@@ -201,5 +204,47 @@ class SettingController extends Controller
             $request->session()->flash('failed', 'Gagal, Kata sandi salah');
             return redirect()->back();
         }
+    }
+
+    public function updateLevelTerm(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required',
+            'jumlah'=>'required|numeric',
+            'koin'=>'required|integer',
+            'kali'=>'required|integer',
+            'password'=>'required'
+        ]);
+
+        $hasPassword = Hash::check($request->password, Auth::user()->password);
+        if($hasPassword){
+            LevelTerm::find($request->id)->update([
+                'amount'=>$request->jumlah,
+                'coin'=>$request->koin,
+                'count'=>$request->kali
+            ]);
+            return redirect()->back()->with(['flash_success' => true,'title' => 'Berhasil','message' => 'Memperbaharui data']);
+        }else{
+            $request->session()->flash('failed', 'Gagal, Kata sandi salah');
+            return redirect()->back();
+        }
+    }
+
+    public function termOfCondition(Request $request)
+    {
+        $data = TermOfCondition::first();
+        return view('backend.setting.termOfCondition',compact('data'));
+    }
+
+    public function updateTermOfCondition(Request $request)
+    {
+        $this->validate($request, [
+            'aturan_sedekah' => 'required'
+        ]);
+
+        TermOfCondition::first()->update([
+            'description'=>$request->aturan_sedekah,
+        ]);
+        return redirect()->back()->with(['flash_success' => true,'title' => 'Berhasil','message' => 'Memperbaharui data']);
     }
 }

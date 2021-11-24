@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Balance;
 use App\Rules\IsValidEmail;
 use App\Rules\IsValidPassword;
+use App\Models\TermOfCondition;
 use App\Helpers\DirectDownline;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -77,5 +78,11 @@ class TeamController extends Controller
 
         (new DirectDownline)->add($user->id, Auth::id());
         return redirect()->back()->with(['flash_success' => true,'title' => 'Selamat Pendaftaran Member Baru Berhasil','message' => 'Berikan Akses User dan Kata sandi ke Member yang Anda bawa.']);
+    }
+
+    public function term_of_condition()
+    {
+        $data = TermOfCondition::first();
+        return view('backend.team.term_of_condition',compact('data'));
     }
 }

@@ -88,12 +88,12 @@ class KoinController extends Controller
         $balanceSender = Balance::where(['user_id'=>$from_id,'description'=>'Koin'])->first();
 
         // masih kurang validasi jumlah koin level
-        $level = $user->hasRank ? Auth::user()->hasRank->level->level : 0;
-        $sum_koin = Level::where('level','<=',$level)->sum('coin');
+        // $level = $user->hasRank ? $user->hasRank->level->level : 0;
+        // $sum_koin = Level::where('level','<=',$level)->sum('coin');
 
-        if($amount > ($balanceSender->balance - $sum_koin)){
-            return redirect()->back()->with(['failed' => 'Gagal, Jumlah koin Anda tidak cukup']);
-        }
+        // if($amount > ($balanceSender->balance - $sum_koin)){
+        //     return redirect()->back()->with(['failed' => 'Gagal, Jumlah koin Anda tidak cukup']);
+        // }
 
         Sell::create([
             'seller_id' => $from_id,

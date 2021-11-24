@@ -8,6 +8,7 @@
                 <div class="pull-left">
                     <p class="stats-info">Total Koin</p>
                     <span class="stats-number">{{$total_koin}}</span>
+                    <p class="stats-info"><a href="{{route('balance.wallet','koin')}}" class="text-primary">Riwayat Koin</a></p>
                 </div>
             </div>
         </div>

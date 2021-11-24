@@ -34,7 +34,7 @@
                             </form>
                         </p>
                         <b>{{ucfirst(Auth::user()->name)}}</b><br>
-                        <p class="mb-0 font-weight-normal">{{(Auth::user()->hasRank) ? Auth::user()->hasRank->level->name : 'Level 0'}} <br> Member {{number_format(Auth::user()->childs()->count())}}</p>
+                        <p class="mb-0 font-weight-normal">{{(Auth::user()->hasRank) ? Auth::user()->hasRank->level->name : '-'}} <br> Member {{number_format(Auth::user()->childs()->count())}}</p>
                     </div>
                 </div>
                 <div class="half-circle">

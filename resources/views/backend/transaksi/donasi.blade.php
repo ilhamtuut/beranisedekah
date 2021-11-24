@@ -15,7 +15,7 @@
                     <div class="panel panel-white box-shadow">
                         <div class="panel-body">
                             <div class="timeline-item-header">
-                                <img src="http://via.placeholder.com/40x40" class="img-60 mb-2" style="float: initial; margin-right:0px;" alt="">
+                                <img src="{{ $donation->receiver->picture ? asset('images/picture/'.$donation->receiver->picture) : asset('images/user.png')}}" class="img-60 mb-2" style="float: initial; margin-right:0px;" alt="">
                                 <p>
                                     <b class="text-success">{{ucwords($donation->receiver->name)}}</b> <br> {{ucwords($donation->receiver->username)}} <br>
                                     @php

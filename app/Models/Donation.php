@@ -14,6 +14,10 @@ class Donation extends Model
         'account_number',
         'account_name',
         'json_data',
+        'step',
+        'coin',
+        'from_level',
+        'to_level',
     	'status'
     ];
 

@@ -3,6 +3,7 @@
 <script src="{{asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
 <script src="{{asset('assets/plugins/uniform/js/jquery.uniform.standalone.js')}}"></script>
 <script src="{{asset('assets/plugins/switchery/switchery.min.js')}}"></script>
+<script src="{{asset('assets/plugins/summernote-master/summernote.min.js')}}"></script>
 <script src="{{asset('assets/js/space.min.js')}}"></script>
 <script>
     @if (Session::has('flash_success'))

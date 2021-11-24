@@ -50,6 +50,11 @@
                             <i class="menu-icon fa fa-bell"></i><span>Notifikasi</span>
                         </a>
                     </li>
+                    <li class="{{ isset($page) && $page == 'term_of_condition' ? 'active-page' : '' }}">
+                        <a href="{{route('team.term_of_condition')}}">
+                            <i class="menu-icon fa fa-file-text"></i><span>Aturan Sedekah</span>
+                        </a>
+                    </li>
                 @endrole
                 @role(['admin','super_admin'])
                     <li class="{{ isset($page) && $page == 'user' ? 'active-page' : '' }}">
@@ -79,6 +84,7 @@
                             <i class="menu-icon icon-settings"></i><span>Pengaturan</span><i class="accordion-icon fa fa-angle-left"></i>
                         </a>
                         <ul class="sub-menu">
+                            <li><a class="{{ isset($active) && $active == 'term' ? 'active' : '' }}" href="{{route('setting.term')}}">Aturan Sedekah</a></li>
                             <li><a class="{{ isset($active) && $active == 'method' ? 'active' : '' }}" href="{{route('setting.method')}}">Tipe Pembayaran</a></li>
                             <li><a class="{{ isset($active) && $active == 'account' ? 'active' : '' }}" href="{{route('setting.account')}}">Akun Perusahaan</a></li>
                             <li><a class="{{ isset($active) && $active == 'contact' ? 'active' : '' }}" href="{{route('setting.contact')}}">Kontak Perusahaan</a></li>

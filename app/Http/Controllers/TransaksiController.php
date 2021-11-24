@@ -205,6 +205,9 @@ class TransaksiController extends Controller
         $levels = Level::where('level',$level)->first();
         $nameLevel = $levels->name;
         $amount = $levels->coin;
+        if($levels->level == 4){
+            $amount = $levels->term()->first()->coin;
+        }
         $koin = $user->balance()->where('description','Koin')->first();
         if($amount > $koin->balance){
             return redirect()->back()->with(['failed' => 'Jumlah koin Anda tidak cukup, untuk bisa melakukan donasi setidaknya harus memiliki '.$amount.' koin.']);

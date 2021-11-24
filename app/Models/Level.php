@@ -14,4 +14,9 @@ class Level extends Model
         'count',
         'status',
     ];
+
+    public function term()
+    {
+        return $this->hasMany(LevelTerm::class, 'level_id');
+    }
 }

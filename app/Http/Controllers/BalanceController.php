@@ -188,6 +188,10 @@ class BalanceController extends Controller
                         $from_id = 2;
                         $to_id = $saldo->user_id;
                         $type_ = 'OUT';
+                        if($balanceAdmin->balance < $request->jumlah){
+                            $request->session()->flash('failed', 'Gagal, Jumlah koin Admin tidak cukup');
+                            return redirect()->back();
+                        }
                         $balanceAdmin->balance = $balanceAdmin->balance - $request->jumlah;
                     }
                 }else{

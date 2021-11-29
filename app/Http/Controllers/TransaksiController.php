@@ -64,7 +64,7 @@ class TransaksiController extends Controller
                 ->groupBy('user_id')
                 ->pluck('receive_id')->toArray();
         array_push($userNot, Auth::id());
-        $notIn = implode($userNot,',');
+        $notIn = implode(',',$userNot);
         $is_priority = 1;
         $user_priority = User::where('is_priority',$is_priority)->first();
         if(is_null($user_priority)){

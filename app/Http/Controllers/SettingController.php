@@ -189,6 +189,7 @@ class SettingController extends Controller
             'jumlah'=>'required|numeric',
             'koin'=>'required|integer',
             'kali'=>'required|integer',
+            'terima'=>'required|integer',
             'password'=>'required'
         ]);
 
@@ -197,7 +198,8 @@ class SettingController extends Controller
             Level::find($request->id)->update([
                 'amount'=>$request->jumlah,
                 'coin'=>$request->koin,
-                'count'=>$request->kali
+                'count'=>$request->kali,
+                'count_r'=>$request->terima
             ]);
             return redirect()->back()->with(['flash_success' => true,'title' => 'Berhasil','message' => 'Memperbaharui data']);
         }else{

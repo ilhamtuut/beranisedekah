@@ -23,6 +23,7 @@
                           <th class="text-right">Jumlah Donasi</th>
                           <th class="text-center">Jumlah Koin</th>
                           <th class="text-center">Berapa Kali Donasi</th>
+                          <th class="text-center">Berapa Kali Terima Donasi</th>
                           <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -35,14 +36,15 @@
                                 <td class="text-right">{{number_format($h->amount,0,',','.')}}</td>
                                 <td class="text-center">{{$h->coin}}</td>
                                 <td class="text-center">{{$h->count}}</td>
+                                <td class="text-center">{{$h->count_r}}</td>
                                 <td class="text-center">
-                                    <button class="badge call_modal" data-id="{{$h->id}}" data-name="{{$h->name}}" data-level="{{$h->level}}" data-amount="{{$h->amount}}" data-coin="{{$h->coin}}" data-count="{{$h->count}}" data-toggle="modal" data-target="#responsive-modal" type="button">Update</button>
+                                    <button class="badge call_modal" data-id="{{$h->id}}" data-name="{{$h->name}}" data-level="{{$h->level}}" data-amount="{{$h->amount}}" data-coin="{{$h->coin}}" data-count="{{$h->count}}" data-count_r="{{$h->count_r}}" data-toggle="modal" data-target="#responsive-modal" type="button">Update</button>
                                 </td>
                             </tr>
                           @endforeach
                         @else
                             <tr>
-                              <td colspan="6" class="text-center">No data available in table</td>
+                              <td colspan="7" class="text-center">No data available in table</td>
                             </tr>
                         @endif
                     </tbody>
@@ -116,6 +118,10 @@
                         <div class="form-group">
                             <label class="col-form-label">Berapa Kali Donasi</label>
                             <input id="count" type="text" onkeypress="if(isNaN( String.fromCharCode(event.keyCode) )) return false;" name="kali" class="form-control" placeholder="Berapa Kali Donasi">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Berapa Kali Terima Donasi</label>
+                            <input id="count_r" type="text" onkeypress="if(isNaN( String.fromCharCode(event.keyCode) )) return false;" name="terima" class="form-control" placeholder="Berapa Kali Terima Donasi">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">Password</label>
@@ -198,6 +204,7 @@
             $('#amount').val($(this).data('amount'));
             $('#coin').val($(this).data('coin'));
             $('#count').val($(this).data('count'));
+            $('#count_r').val($(this).data('count_r'));
         });
         $('.call_modal_two').on('click',function(){
             $('#item_id').val($(this).data('id'));

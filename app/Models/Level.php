@@ -12,6 +12,7 @@ class Level extends Model
         'amount',
         'coin',
         'count',
+        'count_r',
         'status',
     ];
 

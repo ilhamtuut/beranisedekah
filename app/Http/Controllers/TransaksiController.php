@@ -51,7 +51,9 @@ class TransaksiController extends Controller
             $is_level_four = true;
         }
         $levels = Level::where('level',$level)->first();
+        $level_id = $levels->id;
         $amount = $levels->amount;
+        $count_receive = $levels->count_r;
         $userNot = Auth::user()
                 ->donation()
                 ->where([
@@ -62,6 +64,7 @@ class TransaksiController extends Controller
                 ->groupBy('user_id')
                 ->pluck('receive_id')->toArray();
         array_push($userNot, Auth::id());
+        $notIn = implode($userNot,',');
         $is_priority = 1;
         $user_priority = User::where('is_priority',$is_priority)->first();
         if(is_null($user_priority)){
@@ -70,7 +73,6 @@ class TransaksiController extends Controller
         $step = 0;
         $user_id = 0;
         if($is_level_four){
-            $notIn = implode($userNot,',');
             $count1 = LevelTerm::where(['level_id'=>4,'step'=>1])->first()->count;
             $count2 = LevelTerm::where(['level_id'=>4,'step'=>2])->first()->count;
             $count3 = LevelTerm::where(['level_id'=>4,'step'=>3])->first()->count;
@@ -78,40 +80,65 @@ class TransaksiController extends Controller
             $count5 = LevelTerm::where(['level_id'=>4,'step'=>5])->first()->count;
 
             $user = DB::select('
-                select user_id, count(user_id) as total,step,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as donasi
-                from `donations` where (`from_level` = 4 and `to_level` = 1 and `status` = 2 and `step` = 1)
-                and `user_id` not in ('.$notIn.')
-                group by `user_id`, `step`
-                having `total` = '.$count1.' and donasi = 0
+                select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 1)) as kirim_donasi,
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                from `donations`
+                right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                right join `users` on `users`.`id` = `user_levels`.`user_id`
+                where `user_levels`.`level_id` = 4
+                and `user_levels`.`user_id` not in ('.$notIn.')
+                and `is_priority` = '.$is_priority.'
+                group by `user_levels`.`user_id`
+                having kirim_donasi = '.$count1.' and terima_donasi = 0
                 UNION ALL
-                select user_id, count(user_id) as total,step,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as donasi
-                from `donations` where (`from_level` = 4 and `to_level` = 1 and `status` = 2 and `step` = 2)
-                and `user_id` not in ('.$notIn.')
-                group by `user_id`, `step`
-                having `total` = '.$count2.' and donasi = 1
+                select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 2)) as kirim_donasi,
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                from `donations`
+                right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                right join `users` on `users`.`id` = `user_levels`.`user_id`
+                where `user_levels`.`level_id` = 4
+                and `user_levels`.`user_id` not in ('.$notIn.')
+                and `is_priority` = '.$is_priority.'
+                group by `user_levels`.`user_id`
+                having kirim_donasi = '.$count2.' and terima_donasi = 1
                 UNION ALL
-                select user_id, count(user_id) as total,step,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as donasi
-                from `donations` where (`from_level` = 4 and `to_level` = 1 and `status` = 2 and `step` = 3)
-                and `user_id` not in ('.$notIn.')
-                group by `user_id`, `step`
-                having `total` = '.$count3.' and donasi = 2
+                select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 3)) as kirim_donasi,
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                from `donations`
+                right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                right join `users` on `users`.`id` = `user_levels`.`user_id`
+                where `user_levels`.`level_id` = 4
+                and `user_levels`.`user_id` not in ('.$notIn.')
+                and `is_priority` = '.$is_priority.'
+                group by `user_levels`.`user_id`
+                having kirim_donasi = '.$count3.' and terima_donasi = 2
                 UNION ALL
-                select user_id, count(user_id) as total,step,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as donasi
-                from `donations` where (`from_level` = 4 and `to_level` = 1 and `status` = 2 and `step` = 4)
-                and `user_id` not in ('.$notIn.')
-                group by `user_id`, `step`
-                having `total` = '.$count4.' and donasi = 3
+                select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 4)) as kirim_donasi,
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                from `donations`
+                right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                right join `users` on `users`.`id` = `user_levels`.`user_id`
+                where `user_levels`.`level_id` = 4
+                and `user_levels`.`user_id` not in ('.$notIn.')
+                and `is_priority` = '.$is_priority.'
+                group by `user_levels`.`user_id`
+                having kirim_donasi = '.$count4.' and terima_donasi = 3
                 UNION ALL
-                select user_id, count(user_id) as total,step,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as donasi
-                from `donations` where (`from_level` = 4 and `to_level` = 1 and `status` = 2 and `step` = 5)
-                and `user_id` not in ('.$notIn.')
-                group by `user_id`, `step`
-                having `total` = '.$count5.' and donasi = 4
+                select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 5)) as kirim_donasi,
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                from `donations`
+                right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                right join `users` on `users`.`id` = `user_levels`.`user_id`
+                where `user_levels`.`level_id` = 4
+                and `user_levels`.`user_id` not in ('.$notIn.')
+                and `is_priority` = '.$is_priority.'
+                group by `user_levels`.`user_id`
+                having kirim_donasi >= '.$count5.' and terima_donasi = 4
                 ORDER BY RAND()
                 limit 1;
             ');
@@ -120,20 +147,22 @@ class TransaksiController extends Controller
                 $user_id = $user[0]->user_id;
             }
         }else{
-            $user = User::select('id','name','username')
-                ->whereNotIn('id',$userNot)
-                ->whereHas('roles', function ($query) {
-                    $query->where('roles.name', 'member');
-                })
-                ->whereHas('hasRank', function ($query) use ($level) {
-                    $query->whereHas('level', function ($rank) use ($level){
-                        $rank->where('levels.level',$level);
-                    });
-                })
-                ->where('is_priority',$is_priority)
-                ->inRandomOrder()->first();
-            if($user){
-                $user_id = $user->id;
+            $user = DB::select('
+                select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `user_levels`.`user_id` and `b`.`to_level` = '.$level.' and `b`.`status` = 2)) as terima_donasi
+                from `donations`
+                right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                right join `users` on `users`.`id` = `user_levels`.`user_id`
+                where `user_levels`.`level_id` = '.$level_id.'
+                and `user_levels`.`user_id` not in ('.$notIn.')
+                and `is_priority` = '.$is_priority.'
+                group by `user_levels`.`user_id`
+                having terima_donasi < '.$count_receive.'
+                ORDER BY RAND()
+                limit 1;
+            ');
+            if(count($user) > 0){
+                $user_id = $user[0]->user_id;
             }
             if($user_level == 4){
                 $step = 1;

@@ -42,6 +42,15 @@ class TransaksiController extends Controller
 
     public function donasi(Request $request)
     {
+        $donation_old = Auth::user()->donation()->whereIn('status',[0])->first();
+        if($donation_old){
+            $now = date('Y-m-d H:i:s');
+            $date = date('Y-m-d H:i:s', strtotime("+1 day", strtotime($donation_old->created_at)));
+            if($now > $date){
+                $donation_old->update(['status' => 4]);
+            }
+        }
+
         $user_level = Auth::user()->hasRank ? Auth::user()->hasRank->level->level : 0;
         $level = $user_level + 1;
         $is_level_four = false;
@@ -82,7 +91,7 @@ class TransaksiController extends Controller
             $user = DB::select('
                 select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
                 (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 1)) as kirim_donasi,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` in (0,1,2))) as terima_donasi,step
                 from `donations`
                 right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
                 right join `users` on `users`.`id` = `user_levels`.`user_id`
@@ -94,7 +103,7 @@ class TransaksiController extends Controller
                 UNION ALL
                 select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
                 (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 2)) as kirim_donasi,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` in (0,1,2))) as terima_donasi,step
                 from `donations`
                 right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
                 right join `users` on `users`.`id` = `user_levels`.`user_id`
@@ -106,7 +115,7 @@ class TransaksiController extends Controller
                 UNION ALL
                 select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
                 (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 3)) as kirim_donasi,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` in (0,1,2))) as terima_donasi,step
                 from `donations`
                 right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
                 right join `users` on `users`.`id` = `user_levels`.`user_id`
@@ -118,7 +127,7 @@ class TransaksiController extends Controller
                 UNION ALL
                 select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
                 (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 4)) as kirim_donasi,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` in (0,1,2))) as terima_donasi,step
                 from `donations`
                 right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
                 right join `users` on `users`.`id` = `user_levels`.`user_id`
@@ -130,7 +139,7 @@ class TransaksiController extends Controller
                 UNION ALL
                 select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
                 (select count(*) from `donations` as a where (`a`.`user_id` = `user_levels`.`user_id` and `a`.`from_level` = 4 and `a`.`to_level` = 1 and `a`.`status` = 2 and `a`.`step` = 5)) as kirim_donasi,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` = 2)) as terima_donasi,step
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `donations`.`user_id` and `b`.`from_level` = 3 and `b`.`to_level` = 4 and `b`.`status` in (0,1,2))) as terima_donasi,step
                 from `donations`
                 right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
                 right join `users` on `users`.`id` = `user_levels`.`user_id`
@@ -149,7 +158,7 @@ class TransaksiController extends Controller
         }else{
             $user = DB::select('
                 select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
-                (select count(*) from `donations` as b where (`b`.`receive_id` = `user_levels`.`user_id` and `b`.`to_level` = '.$level.' and `b`.`status` = 2)) as terima_donasi
+                (select count(*) from `donations` as b where (`b`.`receive_id` = `user_levels`.`user_id` and `b`.`to_level` = '.$level.' and `b`.`status` in (0,1,2))) as terima_donasi
                 from `donations`
                 right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
                 right join `users` on `users`.`id` = `user_levels`.`user_id`
@@ -345,7 +354,7 @@ class TransaksiController extends Controller
                 ->when($status, function ($query) use ($status){
                     $query->where('status',$status);
                 })
-                ->where('status','!=',0)
+                ->whereNotIn('status',[0,4])
                 ->whereBetween('created_at',[$from_date,$to_date])
                 ->orderBy('id','desc')->paginate(20);
         $amount = Donation::when($search, function ($query) use ($search){
@@ -360,7 +369,7 @@ class TransaksiController extends Controller
                 ->when($status, function ($query) use ($status){
                     $query->where('status',$status);
                 })
-                ->where('status','!=',0)
+                ->whereNotIn('status',[0,4])
                 ->whereBetween('created_at',[$from_date,$to_date])
                 ->sum('amount');
         $total = number_format($amount,0,',','.');

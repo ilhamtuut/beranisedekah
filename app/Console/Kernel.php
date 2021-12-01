@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-
+        '\App\Console\Commands\ExpiredDonation',
     ];
 
     /**
@@ -24,7 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        
+        $schedule->command('donation:expired')
+            ->dailyAt('00:00')
+            ->withoutOverlapping();
     }
 
     /**

@@ -98,6 +98,7 @@ class TransaksiController extends Controller
                 where `user_levels`.`level_id` = 4
                 and `user_levels`.`user_id` not in ('.$notIn.')
                 and `is_priority` = '.$is_priority.'
+                and `users`.`account_bank_name` is not null
                 group by `user_levels`.`user_id`
                 having kirim_donasi = '.$count1.' and terima_donasi = 0
                 UNION ALL
@@ -110,6 +111,7 @@ class TransaksiController extends Controller
                 where `user_levels`.`level_id` = 4
                 and `user_levels`.`user_id` not in ('.$notIn.')
                 and `is_priority` = '.$is_priority.'
+                and `users`.`account_bank_name` is not null
                 group by `user_levels`.`user_id`
                 having kirim_donasi = '.$count2.' and terima_donasi = 1
                 UNION ALL
@@ -122,6 +124,7 @@ class TransaksiController extends Controller
                 where `user_levels`.`level_id` = 4
                 and `user_levels`.`user_id` not in ('.$notIn.')
                 and `is_priority` = '.$is_priority.'
+                and `users`.`account_bank_name` is not null
                 group by `user_levels`.`user_id`
                 having kirim_donasi = '.$count3.' and terima_donasi = 2
                 UNION ALL
@@ -134,6 +137,7 @@ class TransaksiController extends Controller
                 where `user_levels`.`level_id` = 4
                 and `user_levels`.`user_id` not in ('.$notIn.')
                 and `is_priority` = '.$is_priority.'
+                and `users`.`account_bank_name` is not null
                 group by `user_levels`.`user_id`
                 having kirim_donasi = '.$count4.' and terima_donasi = 3
                 UNION ALL
@@ -146,6 +150,7 @@ class TransaksiController extends Controller
                 where `user_levels`.`level_id` = 4
                 and `user_levels`.`user_id` not in ('.$notIn.')
                 and `is_priority` = '.$is_priority.'
+                and `users`.`account_bank_name` is not null
                 group by `user_levels`.`user_id`
                 having kirim_donasi >= '.$count5.' and terima_donasi = 4
                 ORDER BY RAND()
@@ -165,6 +170,7 @@ class TransaksiController extends Controller
                 where `user_levels`.`level_id` = '.$level_id.'
                 and `user_levels`.`user_id` not in ('.$notIn.')
                 and `is_priority` = '.$is_priority.'
+                and `users`.`account_bank_name` is not null
                 group by `user_levels`.`user_id`
                 having terima_donasi < '.$count_receive.'
                 ORDER BY RAND()
@@ -182,6 +188,7 @@ class TransaksiController extends Controller
                     where `user_levels`.`level_id` = '.$level_id.'
                     and `user_levels`.`user_id` not in ('.$notIn.')
                     and `is_priority` = 0
+                    and `users`.`account_bank_name` is not null
                     group by `user_levels`.`user_id`
                     having terima_donasi < '.$count_receive.'
                     ORDER BY RAND()

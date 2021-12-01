@@ -172,6 +172,24 @@ class TransaksiController extends Controller
             ');
             if(count($user) > 0){
                 $user_id = $user[0]->user_id;
+            }else{
+                $user = DB::select('
+                    select `user_levels`.`user_id`, count(`donations`.`user_id`) as total,
+                    (select count(*) from `donations` as b where (`b`.`receive_id` = `user_levels`.`user_id` and `b`.`to_level` = '.$level.' and `b`.`status` in (0,1,2))) as terima_donasi
+                    from `donations`
+                    right join `user_levels` on `donations`.`user_id` = `user_levels`.`user_id`
+                    right join `users` on `users`.`id` = `user_levels`.`user_id`
+                    where `user_levels`.`level_id` = '.$level_id.'
+                    and `user_levels`.`user_id` not in ('.$notIn.')
+                    and `is_priority` = 0
+                    group by `user_levels`.`user_id`
+                    having terima_donasi < '.$count_receive.'
+                    ORDER BY RAND()
+                    limit 1;
+                ');
+                if(count($user) > 0){
+                    $user_id = $user[0]->user_id;
+                }
             }
             if($user_level == 4){
                 $step = 1;
